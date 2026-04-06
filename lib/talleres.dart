@@ -1,116 +1,67 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(const NudoApp());
-
-class NudoApp extends StatelessWidget {
-  const NudoApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        scaffoldBackgroundColor: const Color(0xFFF9F8F4),
-      ),
-      home: const TalleresScreen(),
-    );
-  }
-}
-
-// --- PANTALLA PRINCIPAL ---
-class TalleresScreen extends StatelessWidget {
-  const TalleresScreen({super.key});
+// --- PANTALLA DE TALLERES (Adaptada para la navegación principal) ---
+class TalleresPage extends StatelessWidget {
+  const TalleresPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        title: Row(
-          children: [
-            const Text(
-              'N U D O',
-              style: TextStyle(color: Color(0xFF384E3D), fontWeight: FontWeight.bold, letterSpacing: 2),
-            ),
-            Container(width: 1, height: 20, color: Colors.grey, margin: const EdgeInsets.symmetric(horizontal: 10)),
-            const Text('Studio', style: TextStyle(color: Colors.grey, fontSize: 16)),
-          ],
-        ),
-        actions: [
-          _buildNotificationIcon(),
-          const SizedBox(width: 15),
-          const CircleAvatar(backgroundColor: Color(0xFF384E3D), radius: 15, child: Text('I', style: TextStyle(color: Colors.white, fontSize: 12))),
-          const SizedBox(width: 15),
-        ],
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            Center(
-              child: Column(
-                children: [
-                  const Text('Talleres Disponibles', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFF1B3022))),
-                  const SizedBox(height: 4),
-                  Container(width: 40, height: 3, color: const Color(0xFFB68D14)),
-                  const SizedBox(height: 10),
-                  const Text('Aprende nuevas técnicas artesanales con expertos', style: TextStyle(color: Colors.grey)),
-                ],
-              ),
-            ),
-            const SizedBox(height: 25),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        children: [
+          Center(
+            child: Column(
               children: [
-                _buildStatCard('8', 'Disponibles', Icons.calendar_today, const Color(0xFF384E3D)),
-                _buildStatCard('1', 'Inscritos', Icons.check_circle_outline, const Color(0xFFB68D14)),
-                _buildStatCard('3', 'Completados', Icons.people_outline, const Color(0xFF384E3D)),
+                const Text(
+                  'Talleres Disponibles', 
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFF1B3022))
+                ),
+                const SizedBox(height: 4),
+                Container(width: 40, height: 3, color: const Color(0xFFB68D14)),
+                const SizedBox(height: 10),
+                const Text(
+                  'Aprende nuevas técnicas artesanales con expertos', 
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.grey)
+                ),
               ],
             ),
-            const SizedBox(height: 30),
-            _buildWorkshopCard(context), // Pasamos el contexto para la navegación
-          ],
-        ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: const Color(0xFF384E3D),
-        currentIndex: 2,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home_outlined), label: 'Inicio'),
-          BottomNavigationBarItem(icon: Icon(Icons.shopping_bag_outlined), label: 'Catálogo'),
-          BottomNavigationBarItem(icon: Icon(Icons.school), label: 'Talleres'),
-          BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: 'Perfil'),
+          ),
+          const SizedBox(height: 25),
+          
+          // ESTADÍSTICAS
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _buildStatCard('8', 'Disponibles', Icons.calendar_today, const Color(0xFF384E3D)),
+              _buildStatCard('1', 'Inscritos', Icons.check_circle_outline, const Color(0xFFB68D14)),
+              _buildStatCard('3', 'Completados', Icons.people_outline, const Color(0xFF384E3D)),
+            ],
+          ),
+          
+          const SizedBox(height: 30),
+          
+          // TARJETA DE TALLER
+          _buildWorkshopCard(context),
+          const SizedBox(height: 20),
         ],
       ),
     );
   }
 
-  Widget _buildNotificationIcon() {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        const Icon(Icons.notifications_none, color: Color(0xFF384E3D)),
-        Positioned(
-          right: 0, top: 12,
-          child: Container(
-            padding: const EdgeInsets.all(2),
-            decoration: const BoxDecoration(color: Color(0xFFB68D14), shape: BoxShape.circle),
-            child: const Text('3', style: TextStyle(fontSize: 10, color: Colors.white)),
-          ),
-        )
-      ],
-    );
-  }
-
+  // --- TUS MISMOS WIDGETS DE SOPORTE ---
   Widget _buildStatCard(String value, String label, IconData icon, Color color) {
     return Container(
       width: 100,
       padding: const EdgeInsets.symmetric(vertical: 15),
-      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(15), boxShadow: [
-        BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10, offset: const Offset(0, 5))
-      ]),
+      decoration: BoxDecoration(
+        color: Colors.white, 
+        borderRadius: BorderRadius.circular(15), 
+        boxShadow: [
+          BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10, offset: const Offset(0, 5))
+        ]
+      ),
       child: Column(
         children: [
           Container(
@@ -128,7 +79,13 @@ class TalleresScreen extends StatelessWidget {
 
   Widget _buildWorkshopCard(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20)),
+      decoration: BoxDecoration(
+        color: Colors.white, 
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10, offset: const Offset(0, 5))
+        ]
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -177,7 +134,6 @@ class TalleresScreen extends StatelessWidget {
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        // NAVEGACIÓN A LA NUEVA PÁGINA
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => const InscripcionScreen()),
@@ -218,31 +174,33 @@ class TalleresScreen extends StatelessWidget {
   }
 }
 
-// --- NUEVA PÁGINA DE INSCRIPCIÓN ---
+// --- PÁGINA DE INSCRIPCIÓN (Se mantiene igual) ---
 class InscripcionScreen extends StatelessWidget {
   const InscripcionScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(backgroundColor: Colors.transparent, elevation: 0, iconTheme: const IconThemeData(color: Colors.black)),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            const Icon(Icons.edit_note, size: 80, color: Color(0xFFB68D14)),
+            const SizedBox(height: 20),
             const Text(
-              'Soy el de inscripción',
+              'Formulario de Inscripción',
               style: TextStyle(fontSize: 24, color: Color(0xFF384E3D), fontWeight: FontWeight.bold),
             ),
+            const Padding(
+              padding: EdgeInsets.all(20.0),
+              child: Text('Aquí puedes agregar los campos de nombre, correo, etc.', textAlign: TextAlign.center),
+            ),
             const SizedBox(height: 30),
-            ElevatedButton.icon(
-              onPressed: () => Navigator.pop(context), // VUELVE ATRÁS
-              icon: const Icon(Icons.arrow_back, color: Colors.white),
-              label: const Text('Atrás', style: TextStyle(color: Colors.white)),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFB68D14),
-                padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 12),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-              ),
+            ElevatedButton(
+              onPressed: () => Navigator.pop(context),
+              style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF384E3D)),
+              child: const Text('Volver a Talleres', style: TextStyle(color: Colors.white)),
             ),
           ],
         ),
